@@ -24,3 +24,19 @@ for idx, row in enumerate(cur.fetchall()):
     print('%d- %s — %d views.\n' % (idx + 1, row[0], row[1]))
 
 
+# Print the second report (The most popular article authors).
+cur.execute('''
+  SELECT authors.name, COUNT(log.id) as views
+    FROM authors, articles, log
+    WHERE log.path = concat('/article/', articles.slug)
+        AND articles.author = authors.id
+    GROUP BY authors.name
+    ORDER BY views desc;
+''')
+print('\n\t\t# REPORT 2\n')
+print('\n\nThe most popular article authors are:\n')
+
+for idx, row in enumerate(cur.fetchall()):
+    print('%d- %s — %d views.\n' % (idx + 1, row[0], row[1]))
+
+
