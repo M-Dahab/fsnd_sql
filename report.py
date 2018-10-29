@@ -11,7 +11,7 @@ cur = conn.cursor()
 cur.execute('''
   SELECT articles.title, COUNT(log.id) as views
     FROM articles, log
-    WHERE log.path = concat('/article/', articles.slug)
+    WHERE log.path = CONCAT('/article/', articles.slug)
     GROUP BY articles.title
     ORDER BY views desc
     LIMIT 3;
@@ -28,11 +28,12 @@ for idx, row in enumerate(cur.fetchall()):
 cur.execute('''
   SELECT authors.name, COUNT(log.id) as views
     FROM authors, articles, log
-    WHERE log.path = concat('/article/', articles.slug)
+    WHERE log.path = CONCAT('/article/', articles.slug)
         AND articles.author = authors.id
     GROUP BY authors.name
     ORDER BY views desc;
 ''')
+
 print('\n\t\t# REPORT 2\n')
 print('\n\nThe most popular article authors are:\n')
 
@@ -43,20 +44,21 @@ for idx, row in enumerate(cur.fetchall()):
 # Print the third report
 # (On which days did more than 1% of requests lead to errors?).
 cur.execute('''
-  select to_char(date, 'YYYY-MM-DD'), errors
-    from (
-      select date_trunc('day', time) as date,
-        round(
-          (count(case when status = '404 NOT FOUND' then 1 end)::float /
-          count(id) * 100)::numeric,
+  SELECT TO_CHAR(date, 'Mon DD, YYYY'), errors
+    FROM (
+      SELECT DATE_TRUNC('day', time) as date,
+        ROUND(
+          (COUNT(CASE WHEN status = '404 NOT FOUND' THEN 1 END)::FLOAT /
+          COUNT(id) * 100)::NUMERIC,
           2
         ) as errors
-      from log
-      group by date
-      order by errors desc
+      FROM log
+      GROUP BY date
+      ORDER BY errors desc
     ) as errors_report
-    where errors > 1;
+    WHERE errors > 1;
 ''')
+
 print('\n\t\t# REPORT 3\n')
 print('\n\nDays with more than 1% error rate are:\n')
 

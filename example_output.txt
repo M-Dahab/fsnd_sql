@@ -32,4 +32,4 @@ The most popular article authors are:
 
 Days with more than 1% error rate are:
 
-1- 2016-07-17 — 2.25% of requests failed.
+1- Jul 17, 2016 — 2.25% of requests failed.
