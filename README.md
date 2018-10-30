@@ -18,6 +18,10 @@ It aims to answer the following questions about the provided data set.
 
 3- `postgres` database.
 
+## Preparing the project.
+
+* Install and start `postgres` and make sure It's listening on `localhost:5432` (default config).
+
 * Download and unzip the data from [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip).
 
 * Import it by running `psql -d news -f newsdata.sql`.
